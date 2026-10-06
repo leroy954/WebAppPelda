@@ -49,6 +49,7 @@ namespace WebAppPelda.Services
                 Vasarlo result = new Vasarlo();
                 using (MySqlConnection conn = new DBManager().CreateConnection())
                 {
+                    conn.Open();
                     string sql = "SELECT * FROM vasarlo WHERE Id=@Id;";
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@Id", id);
@@ -62,6 +63,7 @@ namespace WebAppPelda.Services
                     result.Pontszam = reader.GetInt32("Pontszam");
 
                 }   
+                
                     return result;
             }
             catch (Exception ex)
@@ -75,7 +77,124 @@ namespace WebAppPelda.Services
 
 
         }
-        
+
+
+        public string PostVasarlo(Vasarlo uj)
+        {
+            try
+            {
+                string result = "";
+                using (MySqlConnection conn = new DBManager().CreateConnection())
+                {
+                    conn.Open();
+                    string sql = "INSERT INTO vasarlo (Nev, Cim, Email, Telefon, Pontszam) VALUES (@Nev, @Cim, @Email, @Telefon, @Pontszam);";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@Nev", uj.Nev);
+                    cmd.Parameters.AddWithValue("@Cim", uj.Cim);
+                    cmd.Parameters.AddWithValue("@Email", uj.Email);
+                    cmd.Parameters.AddWithValue("@Telefon", uj.Telefon);
+                    cmd.Parameters.AddWithValue("@Pontszam", uj.Pontszam);
+                   int sorokSzama = cmd.ExecuteNonQuery();
+                    if (sorokSzama > 0)
+                    {
+                        result = "Sikeres mentés!";
+                    }
+                    else
+                    {
+                        result = "Sikertelen mentés!";
+                    }
+                    conn.Close();
+                }
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+
+                return ex.Message;
+            }
+
+
+        }
+
+
+
+        public string PutVasarlo(Vasarlo uj)
+        {
+            try
+            {
+                string result = "";
+                using (MySqlConnection conn = new DBManager().CreateConnection())
+                {
+                    conn.Open();
+                    string sql = "UPDATE vasarlo SET nev = @nev, cim = @cim, email = @cim, telefon = @telefon, pontszam = @pontszam WHERE id  = @id";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@Nev", uj.Nev);
+                    cmd.Parameters.AddWithValue("@Cim", uj.Cim);
+                    cmd.Parameters.AddWithValue("@Email", uj.Email);
+                    cmd.Parameters.AddWithValue("@Telefon", uj.Telefon);
+                    cmd.Parameters.AddWithValue("@Pontszam", uj.Pontszam);
+                    cmd.Parameters.AddWithValue("@Id", uj.Id);
+                    int sorokSzama = cmd.ExecuteNonQuery();
+                    if (sorokSzama > 0)
+                    {
+                        result = "Sikeres módosítás!";
+                    }
+                    else
+                    {
+                        result = "Sikertelen módosítás!";
+                    }
+                    conn.Close();
+                }
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+
+                return ex.Message;
+            }
+
+
+        }
+
+
+
+
+        public string DeleteVasarlo(int id)
+        {
+            try
+            {
+                string result = "";
+                using (MySqlConnection conn = new DBManager().CreateConnection())
+                {
+                    conn.Open();
+                    string sql = "DELETE FROM vasarlo WHERE Id = @id";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    int sorokSzama = cmd.ExecuteNonQuery();
+                    if (sorokSzama > 0)
+                    {
+                        result = "Sikeres törlés!";
+                    }
+                    else
+                    {
+                        result = "Sikertelen törlés!";
+                    }
+                    conn.Close();
+                }
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+
+                return ex.Message;
+            }
+
+
+        }
+
 
     }
 }

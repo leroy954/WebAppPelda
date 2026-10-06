@@ -1,0 +1,36 @@
+﻿@model WebAppPelda.Models.Vasarlo;
+
+@{
+    ViewData["Title"] = "Vásárló törlése";
+}
+
+<div class="container mt-4" style="max-width: 600px;">
+    <h2 class="mb-4">Vásárló adatai</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <form asp-action="DeleteVasarlo" method="post" class="needs-validation" novalidate>
+        @* CSRF Token automatikusan generálva asp-action használatakor *@
+
+        <div class="mb-3">
+            <label asp-for="Id" class="form-label"></label>
+            <input asp-for="Id" class="form-control" type="number" disabled />
+            <!--
+            <span asp-validation-for="Nev" class="text-danger"></span>
+            -->
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Törlés</button>
+    </form>
+</div>
+
+@section Scripts {
+    @* Kliensoldali validáció bekapcsolása ASP.NET Core-ban *@
+    <partial name="_ValidationScriptsPartial" />
+}
